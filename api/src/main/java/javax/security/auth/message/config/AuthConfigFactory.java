@@ -142,6 +142,12 @@ public abstract class AuthConfigFactory {
 	public static final SecurityPermission setFactorySecurityPermission = new SecurityPermission(SET_FACTORY_PERMISSION_NAME);
 
 	/**
+	 * The default AuthConfigFactory implementation
+	 * */
+	private static final String FACTORY_IMPL = "org.jboss.security.auth.message.config.JBossAuthConfigFactory";
+
+
+	/**
 	 * An instance of the SecurityPermission (with name {@link #PROVIDER_REGISTRATION_PERMISSION_NAME}) for use in
 	 * authorizing access to the update methods of the factory implementation class.
 	 */
@@ -195,24 +201,61 @@ public abstract class AuthConfigFactory {
 		checkPermission(getFactorySecurityPermission);
 		
 		if (AuthConfigFactory.factory == null) {
-			final String className = Security.getProperty(DEFAULT_FACTORY_SECURITY_PROPERTY);
-			if (className != null) {
-				checkPermission(setFactorySecurityPermission);
-				try {
-					AuthConfigFactory.factory = AccessController.doPrivileged(new PrivilegedExceptionAction<AuthConfigFactory>() {
-						
-						public AuthConfigFactory run() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-							return (AuthConfigFactory) 
-									Class.forName(
-											className, 
-											true, 
-											Thread.currentThread().getContextClassLoader())
-										 .newInstance();
-						}
-					});
-				} catch (PrivilegedActionException pae) {
-					throw new SecurityException(pae.getException());
+			checkPermission(setFactorySecurityPermission);
+			String factoryName = null;
+			Class clazz = null;
+			try {
+				LoadAction action = new LoadAction();
+				try
+				{
+					clazz = (Class) AccessController.doPrivileged(action);
+					factoryName = action.getName();
 				}
+				catch (PrivilegedActionException ex) {
+					factoryName = action.getName();
+					Exception e = ex.getException();
+					if (e instanceof ClassNotFoundException)
+						throw (ClassNotFoundException) e;
+					else
+						throw new IllegalStateException("Failure during load of class: " + action.getName() + e);
+				}
+				factory = (AuthConfigFactory) clazz.newInstance();
+			}
+			catch (ClassNotFoundException e)
+			{
+				String msg = "Failed to find AuthConfigFactory : " + factoryName;
+				IllegalStateException ise = new IllegalStateException(msg);
+				ise.initCause(e);
+				throw ise;
+			}
+			catch (IllegalAccessException e)
+			{
+				String msg = "Unable to access class : " + factoryName;
+				IllegalStateException ise = new IllegalStateException(msg);
+				ise.initCause(e);
+				throw ise;
+			}
+			catch (InstantiationException e)
+			{
+				String msg = "Failed to create instance of: " + factoryName;
+				IllegalStateException ise = new IllegalStateException(msg);
+				ise.initCause(e);
+				throw ise;
+			}
+			catch (ClassCastException e)
+			{
+				StringBuffer msg = new StringBuffer(factoryName + " Is not a AuthConfigFactory, ");
+				msg.append("ACF.class.CL: "+ AuthConfigFactory.class.getClassLoader());
+				msg.append("\nACF.class.CS: " + AuthConfigFactory.class.getProtectionDomain().getCodeSource());
+				msg.append("\nACF.class.hash: "+System.identityHashCode(AuthConfigFactory.class));
+				msg.append("\nclazz.CL: "+clazz.getClassLoader());
+				msg.append("\nclazz.CS: "+clazz.getProtectionDomain().getCodeSource());
+				msg.append("\nclazz.super.CL: "+clazz.getSuperclass().getClassLoader());
+				msg.append("\nclazz.super.CS: "+clazz.getSuperclass().getProtectionDomain().getCodeSource());
+				msg.append("\nclazz.super.hash: "+System.identityHashCode(clazz.getSuperclass()));
+				ClassCastException cce = new ClassCastException(msg.toString());
+				cce.initCause(e);
+				throw cce;
 			}
 		}
 		
@@ -502,5 +545,33 @@ public abstract class AuthConfigFactory {
 		boolean isPersistent();
 
 	}
+
+	/**
+	 * A PrivilegedExceptionAction that looks up the class name identified
+	 * by the authcontextfactory.provider system property and loads the class
+	 * using the thread context class loader.</p>
+	 */
+	private static class LoadAction implements PrivilegedExceptionAction
+	{
+		private String className;
+		public String getName()
+		{
+			return className;
+		}
+		public Object run()
+				throws Exception
+		{
+			className = System.getProperty(DEFAULT_FACTORY_SECURITY_PROPERTY);
+			if( className == null )
+			{
+				// Use the default factory impl
+				className = FACTORY_IMPL;
+			}
+			ClassLoader loader = Thread.currentThread().getContextClassLoader();
+			Class factoryClass = loader.loadClass(className);
+			return factoryClass;
+		}
+	}
+
 
 }
