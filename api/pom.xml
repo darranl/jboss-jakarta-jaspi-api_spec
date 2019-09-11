@@ -37,7 +37,7 @@
         Jakarta Authentication consists of several profiles, with each profile telling how a specific container
         (such as Jakarta Servlet) can integrate with- and adapt to this SPI.
     </description>
-    <url>https://github.com/eclipse-ee4j/jaspic</url>
+    <url>https://github.com/jboss/jboss-jakarta-jaspi-api_spec</url>
 
     <properties>
         <non.final>false</non.final>
@@ -95,11 +95,11 @@
         <url>https://github.com/eclipse-ee4j/jaspic/issues</url>
     </issueManagement>
     <scm>
-        <connection>scm:git:ssh://git@github.com/eclipse-ee4j/jaspic.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/eclipse-ee4j/jaspic.git</developerConnection>
-        <url>https://github.com/eclipse-ee4j/jaspic</url>
-      <tag>HEAD</tag>
-  </scm>
+        <connection>scm:git:ssh://git@github.com:jboss/jboss-jakarta-jaspi-api_spec.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:jboss/jboss-jakarta-jaspi-api_spec.git</developerConnection>
+        <url>https://github.com/jboss/jboss-jakarta-jaspi-api_spec</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <build>
         <defaultGoal>install</defaultGoal>

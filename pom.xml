@@ -42,10 +42,10 @@
     <url>https://github.com/eclipse-ee4j/jaspic</url>
 
     <scm>
-        <connection>scm:git:ssh://git@github.com/eclipse-ee4j/jaspic.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/eclipse-ee4j/jaspic.git</developerConnection>
-        <url>https://github.com/eclipse-ee4j/jaspic</url>
-      <tag>HEAD</tag>
+        <connection>scm:git:ssh://git@github.com:jboss/jboss-jakarta-jaspi-api_spec.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:jboss/jboss-jakarta-jaspi-api_spec.git</developerConnection>
+        <url>https://github.com/jboss/jboss-jakarta-jaspi-api_spec</url>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
