@@ -43,12 +43,14 @@
         <non.final>false</non.final>
         <extension.name>javax.security.auth.message</extension.name>
         <spec.version>1.1</spec.version>
-        
+
+        <bundle.symbolicName>org.jboss.spec.javax.security.auth.message.jboss-jaspi-api_${spec.version}_spec</bundle.symbolicName>
+
         <findbugs.version>3.0.1</findbugs.version>
         <findbugs.skip>false</findbugs.skip>
         <findbugs.exclude>exclude-common.xml</findbugs.exclude>
         <findbugs.threshold>Low</findbugs.threshold>
-        
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -74,8 +76,8 @@
     </contributors>
 
     <organization>
-        <name>Jakarta Authentication</name>
-        <url>https://github.com/eclipse-ee4j/jaspic</url>
+        <name>JBoss by Red Hat</name>
+        <url>https://github.com/jboss/jboss-jakarta-jaspi-api_spec</url>
     </organization>
     
     <licenses>
@@ -176,13 +178,18 @@
                     <supportedProjectTypes>
                         <supportedProjectType>jar</supportedProjectType>
                     </supportedProjectTypes>
+                    <archive>
+                        <manifest>
+                            <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
                     <instructions>
-                        <Automatic-Module-Name>java.security.auth.message</Automatic-Module-Name>
+                        <Automatic-Module-Name>beta.jboss.jaspi.api_1_1</Automatic-Module-Name>
                         <Bundle-Version>${spec.bundle.version}</Bundle-Version>
-                        <Bundle-SymbolicName>${spec.bundle.symbolic-name}</Bundle-SymbolicName>
+                        <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
                         <Extension-Name>${spec.extension.name}</Extension-Name>
                         <Implementation-Version>${spec.implementation.version}</Implementation-Version>
-                        <Specification-Version>${spec.specification.version}</Specification-Version>                        
+                        <Specification-Version>1.1</Specification-Version>
                         <Bundle-Description>
                             Jakarta Authentication ${spec.version} Specification
                         </Bundle-Description>
