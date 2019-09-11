@@ -173,7 +173,6 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>4.0.0</version>
                 <configuration>
                     <supportedProjectTypes>
                         <supportedProjectType>jar</supportedProjectType>
@@ -185,11 +184,11 @@
                     </archive>
                     <instructions>
                         <Automatic-Module-Name>java.security.auth.message</Automatic-Module-Name>
-                        <Bundle-Version>${spec.bundle.version}</Bundle-Version>
+                        <Bundle-Version>${spec.version}</Bundle-Version>
                         <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
-                        <Extension-Name>${spec.extension.name}</Extension-Name>
-                        <Implementation-Version>${spec.implementation.version}</Implementation-Version>
-                        <Specification-Version>1.1</Specification-Version>
+                        <Extension-Name>${extension.name}</Extension-Name>
+                        <Implementation-Version>${project.version}</Implementation-Version>
+                        <Specification-Version>${spec.version}</Specification-Version>
                         <Bundle-Description>
                             Jakarta Authentication ${spec.version} Specification
                         </Bundle-Description>
@@ -197,6 +196,10 @@
                         <Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
                         <Implementation-Vendor-Id>org.glassfish</Implementation-Vendor-Id>
                         <_include>-${basedir}/osgi.bundle</_include>
+                        <!-- Set the package version to match the spec version -->
+                        <Export-Package>
+                            javax.security.auth.message*;version=${spec.version}
+                        </Export-Package>
                     </instructions>
                 </configuration>
                 <executions>
