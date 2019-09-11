@@ -184,7 +184,7 @@
                         </manifest>
                     </archive>
                     <instructions>
-                        <Automatic-Module-Name>beta.jboss.jaspi.api_1_1</Automatic-Module-Name>
+                        <Automatic-Module-Name>java.security.auth.message</Automatic-Module-Name>
                         <Bundle-Version>${spec.bundle.version}</Bundle-Version>
                         <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
                         <Extension-Name>${spec.extension.name}</Extension-Name>
